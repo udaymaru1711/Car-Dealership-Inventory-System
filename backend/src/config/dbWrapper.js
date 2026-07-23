@@ -25,6 +25,27 @@ async function checkPgConnection() {
   }
 }
 
+function searchInMemoryVehicles(filters = {}) {
+  return memoryDb.vehicles.filter(v => {
+    if (filters.make && !v.make.toLowerCase().includes(filters.make.toLowerCase())) {
+      return false;
+    }
+    if (filters.model && !v.model.toLowerCase().includes(filters.model.toLowerCase())) {
+      return false;
+    }
+    if (filters.category && v.category.toLowerCase() !== filters.category.toLowerCase()) {
+      return false;
+    }
+    if (filters.minPrice !== undefined && parseFloat(v.price) < parseFloat(filters.minPrice)) {
+      return false;
+    }
+    if (filters.maxPrice !== undefined && parseFloat(v.price) > parseFloat(filters.maxPrice)) {
+      return false;
+    }
+    return true;
+  });
+}
+
 async function query(text, params = []) {
   const usePg = await checkPgConnection();
   if (usePg) {
@@ -64,17 +85,16 @@ async function query(text, params = []) {
     return { rows: [{ id: newUser.id, name: newUser.name, email: newUser.email, role: newUser.role, created_at: newUser.created_at }] };
   }
 
-  // Vehicle CRUD Queries
-
-  // GET All Vehicles
-  if (sql.includes('select * from vehicles order by id desc')) {
-    return { rows: [...memoryDb.vehicles].sort((a, b) => b.id - a.id) };
-  }
-
+  // GET Vehicle by ID
   if (sql.includes('select * from vehicles where id =')) {
     const id = parseInt(params[0]);
     const vehicle = memoryDb.vehicles.find(v => v.id === id);
     return { rows: vehicle ? [vehicle] : [] };
+  }
+
+  // GET All Vehicles (no WHERE clause)
+  if (sql === 'select * from vehicles order by id desc' || sql === 'select * from vehicles') {
+    return { rows: [...memoryDb.vehicles].sort((a, b) => b.id - a.id) };
   }
 
   // INSERT Vehicle
@@ -109,15 +129,7 @@ async function query(text, params = []) {
     const targetId = parseInt(params[params.length - 1]);
     const index = memoryDb.vehicles.findIndex(v => v.id === targetId);
     if (index === -1) {
-      // If not found by last param, check first param or search by id
-      const altIndex = memoryDb.vehicles.findIndex(v => v.id === parseInt(params[0]));
-      if (altIndex === -1) return { rows: [] };
-      memoryDb.vehicles[altIndex] = {
-        ...memoryDb.vehicles[altIndex],
-        price: params[1] !== undefined ? parseFloat(params[1]) : memoryDb.vehicles[altIndex].price,
-        quantity: params[2] !== undefined ? parseInt(params[2]) : memoryDb.vehicles[altIndex].quantity
-      };
-      return { rows: [memoryDb.vehicles[altIndex]] };
+      return { rows: [] };
     }
 
     const make = params[0];
@@ -131,14 +143,14 @@ async function query(text, params = []) {
 
     memoryDb.vehicles[index] = {
       ...memoryDb.vehicles[index],
-      make,
-      model,
-      year,
-      category,
-      price,
-      quantity,
-      image_url,
-      description
+      make: make !== undefined ? make : memoryDb.vehicles[index].make,
+      model: model !== undefined ? model : memoryDb.vehicles[index].model,
+      year: !isNaN(parseInt(year)) ? parseInt(year) : memoryDb.vehicles[index].year,
+      category: category !== undefined ? category : memoryDb.vehicles[index].category,
+      price: !isNaN(parseFloat(price)) ? parseFloat(price) : memoryDb.vehicles[index].price,
+      quantity: !isNaN(parseInt(quantity)) ? parseInt(quantity) : memoryDb.vehicles[index].quantity,
+      image_url: image_url !== undefined ? image_url : memoryDb.vehicles[index].image_url,
+      description: description !== undefined ? description : memoryDb.vehicles[index].description
     };
 
     return { rows: [memoryDb.vehicles[index]] };
@@ -159,5 +171,6 @@ async function query(text, params = []) {
 module.exports = {
   query,
   memoryDb,
+  searchInMemoryVehicles,
   pool
 };

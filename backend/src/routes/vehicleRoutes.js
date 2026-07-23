@@ -3,6 +3,7 @@ const router = express.Router();
 const {
   createVehicle,
   getAllVehicles,
+  searchVehicles,
   updateVehicle,
   deleteVehicle
 } = require('../controllers/vehicleController');
@@ -16,6 +17,9 @@ router.post('/', createVehicle);
 
 // GET /api/vehicles - List all available vehicles
 router.get('/', getAllVehicles);
+
+// GET /api/vehicles/search - Search for vehicles by make, model, category, or price range
+router.get('/search', searchVehicles);
 
 // PUT /api/vehicles/:id - Update vehicle details
 router.put('/:id', updateVehicle);

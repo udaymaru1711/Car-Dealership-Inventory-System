@@ -55,3 +55,16 @@
 - Created `src/routes/vehicleRoutes.js` and attached endpoints.
 - Created TDD integration test suite `backend/tests/vehicles.test.js`.
 - Verified test suite execution: 20/20 total passed.
+
+---
+
+## Phase 3: Search & Filtering (`GET /api/vehicles/search`)
+
+### Prompt 6: Search & Filtering Implementation
+> "Implement GET /api/vehicles/search by make, model, category, and price range, with TDD integration tests."
+
+**AI Action**:
+- Added `searchVehicles` controller method in `src/controllers/vehicleController.js`.
+- Mounted `GET /api/vehicles/search` in `src/routes/vehicleRoutes.js`.
+- Created TDD integration test suite `backend/tests/search.test.js`.
+- Verified test suite execution: 24/24 total passed.

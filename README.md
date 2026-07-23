@@ -17,7 +17,10 @@ A full-stack RESTful Car Dealership Inventory System built with Node.js, Express
 - [x] **Feature 2.4**: Delete Vehicle (`DELETE /api/vehicles/:id` - Admin only).
 
 ### Phase 3: Search & Filtering
-- [ ] **Feature 3.1**: Vehicle Search (`GET /api/vehicles/search` by make, model, category, price range).
+- [x] **Feature 3.1**: Vehicle Search (`GET /api/vehicles/search` by make, model, category, price range).
+
+### Phase 4: Purchase Workflow
+- [ ] **Feature 4.1**: Purchase Vehicle (`POST /api/vehicles/:id/purchase` - stock decrement & record transaction).
 
 ---
 
@@ -26,7 +29,8 @@ A full-stack RESTful Car Dealership Inventory System built with Node.js, Express
 - `POST /api/auth/login`: PASS (4/4 tests passed)
 - Auth & Authorization Middleware (`verifyToken`, `requireAdmin`): PASS (6/6 tests passed)
 - Vehicle CRUD API (`POST`, `GET`, `PUT`, `DELETE /api/vehicles`): PASS (7/7 tests passed)
-- **Total Test Pass Rate**: 20/20 passed (100%)
+- Vehicle Search & Filter (`GET /api/vehicles/search`): PASS (4/4 tests passed)
+- **Total Test Pass Rate**: 24/24 passed (100%)
 
 ---
 
@@ -36,10 +40,9 @@ A full-stack RESTful Car Dealership Inventory System built with Node.js, Express
 - **Antigravity AI Assistant** (powered by Gemini 3.6 Flash)
 
 ### How AI Was Utilized
-- Generated Express controllers and routes for User Auth and Vehicle CRUD.
-- Implemented PostgreSQL database query handlers and memory wrappers for testing.
-- Created `verifyToken` and `requireAdmin` security middlewares.
-- Built Jest + Supertest integration tests for Vehicle CRUD adhering to TDD patterns.
+- Generated Express controllers and routes for User Auth, Vehicle CRUD, and Vehicle Search.
+- Implemented PostgreSQL dynamic multi-criteria SQL query builder with fallback memory layer.
+- Built Jest + Supertest integration tests for Search & Filtering adhering to TDD patterns.
 
 ### Reflection on AI Impact
-AI significantly accelerated boilerplate creation, database query handling, authentication flows, middleware security, and test-driven development cycles.
+AI significantly accelerated boilerplate creation, database query handling, authentication flows, middleware security, search algorithms, and test-driven development cycles.

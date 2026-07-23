@@ -65,6 +65,76 @@ const getAllVehicles = async (req, res) => {
 };
 
 /**
+ * Search vehicles by make, model, category, or price range
+ * GET /api/vehicles/search
+ */
+const searchVehicles = async (req, res) => {
+  try {
+    const { make, model, category, minPrice, maxPrice } = req.query;
+
+    const filters = {};
+    if (make) filters.make = make.trim();
+    if (model) filters.model = model.trim();
+    if (category) filters.category = category.trim();
+    if (minPrice && !isNaN(minPrice)) filters.minPrice = parseFloat(minPrice);
+    if (maxPrice && !isNaN(maxPrice)) filters.maxPrice = parseFloat(maxPrice);
+
+    // Memory fallback execution
+    let vehicles = db.searchInMemoryVehicles(filters);
+
+    // If PostgreSQL DB query is active
+    const conditions = [];
+    const values = [];
+    let paramIndex = 1;
+
+    if (make) {
+      conditions.push(`make ILIKE $${paramIndex++}`);
+      values.push(`%${make.trim()}%`);
+    }
+
+    if (model) {
+      conditions.push(`model ILIKE $${paramIndex++}`);
+      values.push(`%${model.trim()}%`);
+    }
+
+    if (category) {
+      conditions.push(`category ILIKE $${paramIndex++}`);
+      values.push(category.trim());
+    }
+
+    if (minPrice && !isNaN(minPrice)) {
+      conditions.push(`price >= $${paramIndex++}`);
+      values.push(parseFloat(minPrice));
+    }
+
+    if (maxPrice && !isNaN(maxPrice)) {
+      conditions.push(`price <= $${paramIndex++}`);
+      values.push(parseFloat(maxPrice));
+    }
+
+    let sql = 'SELECT * FROM vehicles';
+    if (conditions.length > 0) {
+      sql += ' WHERE ' + conditions.join(' AND ');
+    }
+    sql += ' ORDER BY price ASC';
+
+    const dbResult = await db.query(sql, values);
+    if (dbResult.rows.length > 0) {
+      vehicles = dbResult.rows;
+    }
+
+    return res.status(200).json({
+      count: vehicles.length,
+      filters,
+      vehicles
+    });
+  } catch (error) {
+    console.error('Search Vehicles Error:', error);
+    return res.status(500).json({ error: 'Internal server error while searching vehicles' });
+  }
+};
+
+/**
  * Update vehicle details
  * PUT /api/vehicles/:id
  */
@@ -73,7 +143,6 @@ const updateVehicle = async (req, res) => {
     const { id } = req.params;
     const { make, model, year, category, price, quantity, image_url, description } = req.body;
 
-    // Check if vehicle exists
     const existing = await db.query('SELECT * FROM vehicles WHERE id = $1', [id]);
     if (existing.rows.length === 0) {
       return res.status(404).json({ error: 'Vehicle not found' });
@@ -125,7 +194,6 @@ const deleteVehicle = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Check if vehicle exists
     const existing = await db.query('SELECT * FROM vehicles WHERE id = $1', [id]);
     if (existing.rows.length === 0) {
       return res.status(404).json({ error: 'Vehicle not found' });
@@ -146,6 +214,7 @@ const deleteVehicle = async (req, res) => {
 module.exports = {
   createVehicle,
   getAllVehicles,
+  searchVehicles,
   updateVehicle,
   deleteVehicle
 };
