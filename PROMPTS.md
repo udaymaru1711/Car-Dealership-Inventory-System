@@ -42,3 +42,16 @@
 - Created `src/middleware/authMiddleware.js` exporting `verifyToken` and `requireAdmin`.
 - Created TDD integration test suite `backend/tests/middleware.test.js`.
 - Verified test suite execution: 13/13 total passed.
+
+---
+
+## Phase 2: Vehicle CRUD (`/api/vehicles`)
+
+### Prompt 5: Vehicle CRUD Endpoints & Tests
+> "Implement POST, GET, PUT, DELETE /api/vehicles endpoints with verifyToken and requireAdmin authorization, and create Jest test suite."
+
+**AI Action**:
+- Created `src/controllers/vehicleController.js` handling `createVehicle`, `getAllVehicles`, `updateVehicle`, `deleteVehicle`.
+- Created `src/routes/vehicleRoutes.js` and attached endpoints.
+- Created TDD integration test suite `backend/tests/vehicles.test.js`.
+- Verified test suite execution: 20/20 total passed.
