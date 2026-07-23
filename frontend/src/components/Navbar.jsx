@@ -60,22 +60,28 @@ export default function Navbar({ onOpenAuthModal, onOpenAddModal }) {
             </button>
           )}
 
-          {/* User Auth Profile Badge */}
+          {/* User Auth Profile Badge or Sign In Button */}
           {user ? (
-            <div className="flex items-center gap-3 bg-slate-900 border border-slate-800 px-3.5 py-1.5 rounded-xl">
-              <div className="w-8 h-8 rounded-lg bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center text-indigo-400 font-bold text-xs">
-                {user.name.charAt(0)}
-              </div>
-              <div className="hidden sm:block text-left">
-                <p className="text-xs font-semibold text-white leading-tight">{user.name}</p>
-                <span className="text-[10px] uppercase font-bold tracking-wider text-indigo-400">
-                  {user.role}
-                </span>
-              </div>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={onOpenAuthModal}
+                title="Switch Account / Sign In"
+                className="flex items-center gap-3 bg-slate-900 hover:bg-slate-800 border border-slate-800 px-3.5 py-1.5 rounded-xl transition text-left"
+              >
+                <div className="w-8 h-8 rounded-lg bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center text-indigo-400 font-bold text-xs">
+                  {user.name ? user.name.charAt(0) : 'U'}
+                </div>
+                <div className="hidden sm:block text-left">
+                  <p className="text-xs font-semibold text-white leading-tight">{user.name}</p>
+                  <span className="text-[10px] uppercase font-bold tracking-wider text-indigo-400">
+                    {user.role}
+                  </span>
+                </div>
+              </button>
               <button
                 onClick={logout}
                 title="Log Out"
-                className="p-1.5 text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition"
+                className="p-2 text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-xl transition border border-slate-800"
               >
                 <LogOut className="w-4 h-4" />
               </button>
@@ -89,6 +95,7 @@ export default function Navbar({ onOpenAuthModal, onOpenAddModal }) {
               <span>Sign In / Register</span>
             </button>
           )}
+
 
         </div>
       </div>
