@@ -35,17 +35,24 @@ async function query(text, params = []) {
   // Fallback memory implementation matching SQL query semantics
   const sql = text.trim().toLowerCase();
 
-  // User Registration check email
+  // User query by email
   if (sql.includes('select * from users where email =')) {
-    const email = params[0];
-    const user = memoryDb.users.find(u => u.email === email);
+    const email = (params[0] || '').toLowerCase().trim();
+    const user = memoryDb.users.find(u => u.email.toLowerCase() === email);
+    return { rows: user ? [user] : [] };
+  }
+
+  // Select user by id
+  if (sql.includes('select * from users where id =')) {
+    const id = parseInt(params[0]);
+    const user = memoryDb.users.find(u => u.id === id);
     return { rows: user ? [user] : [] };
   }
 
   // Insert user
   if (sql.includes('insert into users')) {
     const name = params[0];
-    const email = params[1];
+    const email = params[1].toLowerCase().trim();
     const password = params[2];
     const role = params[3] || 'user';
     const newUser = {
@@ -58,13 +65,6 @@ async function query(text, params = []) {
     };
     memoryDb.users.push(newUser);
     return { rows: [{ id: newUser.id, name: newUser.name, email: newUser.email, role: newUser.role, created_at: newUser.created_at }] };
-  }
-
-  // Select user by id
-  if (sql.includes('select * from users where id =')) {
-    const id = parseInt(params[0]);
-    const user = memoryDb.users.find(u => u.id === id);
-    return { rows: user ? [user] : [] };
   }
 
   return { rows: [] };

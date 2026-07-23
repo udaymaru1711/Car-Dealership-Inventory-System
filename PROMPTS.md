@@ -17,3 +17,16 @@
 - Created route handler `src/routes/authRoutes.js`.
 - Created integration test suite `backend/tests/auth.test.js`.
 - Verified test suite execution: 3/3 passed.
+
+---
+
+## Feature 1.3: Authentication - User Login (`POST /api/auth/login`)
+
+### Prompt 3: Login Endpoint & JWT Generation
+> "Implement POST /api/auth/login with password validation and JWT token issuance."
+
+**AI Action**:
+- Added `login` method to `src/controllers/authController.js`.
+- Added route handler to `src/routes/authRoutes.js`.
+- Expanded integration tests in `backend/tests/auth.test.js`.
+- Verified test suite execution: 7/7 total passed.

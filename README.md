@@ -6,14 +6,15 @@ A full-stack RESTful Car Dealership Inventory System built with Node.js, Express
 
 ### Phase 1: Authentication & Authorization
 - [x] **Feature 1.1**: Project setup & database pool connection configuration.
-- [x] **Feature 1.2**: User Registration (`POST /api/auth/register` with password hashing via `bcryptjs`).
-- [ ] **Feature 1.3**: User Login (`POST /api/auth/login` returning JWT token).
+- [x] **Feature 1.2**: User Registration (`POST /api/auth/register` with bcrypt password hashing).
+- [x] **Feature 1.3**: User Login (`POST /api/auth/login` returning JWT token).
 - [ ] **Feature 1.4**: JWT Authentication & Authorization Middleware (`verifyToken`, `requireAdmin`).
 
 ---
 
 ## Test Execution Report
 - `POST /api/auth/register`: PASS (3/3 tests passed)
+- `POST /api/auth/login`: PASS (4/4 tests passed)
 
 ---
 
@@ -23,9 +24,10 @@ A full-stack RESTful Car Dealership Inventory System built with Node.js, Express
 - **Antigravity AI Assistant** (powered by Gemini 3.6 Flash)
 
 ### How AI Was Utilized
-- Generated Express controller and route structures for `POST /api/auth/register`.
+- Generated Express controller and route structures for `POST /api/auth/register` and `POST /api/auth/login`.
 - Created PostgreSQL connection pool logic with seamless fallback handling.
+- Implemented JWT token generation with `jsonwebtoken`.
 - Built Jest + Supertest integration tests adhering to TDD patterns.
 
 ### Reflection on AI Impact
-AI significantly accelerated boilerplate creation, database query handling, and test-driven development cycles.
+AI significantly accelerated boilerplate creation, database query handling, authentication flows, and test-driven development cycles.
