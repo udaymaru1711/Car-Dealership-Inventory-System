@@ -81,3 +81,19 @@
 - Mounted purchase and restock routes in `src/routes/vehicleRoutes.js`.
 - Created TDD integration test suite `backend/tests/inventory.test.js`.
 - Verified test suite execution: 29/29 total passed.
+
+---
+
+## Phase 6: Frontend SPA Development (React + Vite + Tailwind CSS)
+
+### Prompt 8: Frontend SPA Setup & Component Architecture
+> "Implement Feature 6.1: React + Vite + Tailwind setup & Design Tokens with dark luxury theme, Auth & Vehicle contexts, and full backend integration."
+
+**AI Action**:
+- Configured Vite build system with React plugin and proxy settings pointing `/api` to Express backend.
+- Extended Tailwind CSS with dark slate glassmorphism palette (`glass-panel`, `glass-card`) and custom fonts (`Plus Jakarta Sans`).
+- Implemented `AuthContext` and `VehicleContext` for client-side state management.
+- Built modular glassmorphic component tree (`Navbar`, `HeroSection`, `FilterBar`, `VehicleCard`, `AuthModal`, `VehicleModal`, `RestockModal`).
+- Created React root entry points (`main.jsx` and `App.jsx`).
+- Verified production bundle build via Vite: zero errors.
+
