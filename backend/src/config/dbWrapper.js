@@ -124,12 +124,24 @@ async function query(text, params = []) {
     return { rows: [newVehicle] };
   }
 
-  // UPDATE Vehicle
+  // UPDATE Vehicle (Quantity Increment/Decrement or General Edit)
   if (sql.includes('update vehicles')) {
     const targetId = parseInt(params[params.length - 1]);
     const index = memoryDb.vehicles.findIndex(v => v.id === targetId);
-    if (index === -1) {
-      return { rows: [] };
+    if (index === -1) return { rows: [] };
+
+    // Check if quantity decrement query
+    if (sql.includes('quantity = quantity -')) {
+      const dec = parseInt(params[0]) || 1;
+      memoryDb.vehicles[index].quantity = Math.max(0, memoryDb.vehicles[index].quantity - dec);
+      return { rows: [memoryDb.vehicles[index]] };
+    }
+
+    // Check if quantity restock query
+    if (sql.includes('quantity = quantity +')) {
+      const inc = parseInt(params[0]) || 1;
+      memoryDb.vehicles[index].quantity += inc;
+      return { rows: [memoryDb.vehicles[index]] };
     }
 
     const make = params[0];
@@ -154,6 +166,25 @@ async function query(text, params = []) {
     };
 
     return { rows: [memoryDb.vehicles[index]] };
+  }
+
+  // INSERT Purchase Record
+  if (sql.includes('insert into purchases')) {
+    const user_id = params[0];
+    const vehicle_id = params[1];
+    const quantity = params[2] || 1;
+    const total_price = params[3];
+
+    const newPurchase = {
+      id: memoryDb.purchaseIdSeq++,
+      user_id,
+      vehicle_id,
+      quantity,
+      total_price,
+      purchased_at: new Date().toISOString()
+    };
+    memoryDb.purchases.push(newPurchase);
+    return { rows: [newPurchase] };
   }
 
   // DELETE Vehicle

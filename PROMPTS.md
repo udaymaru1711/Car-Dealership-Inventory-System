@@ -68,3 +68,16 @@
 - Mounted `GET /api/vehicles/search` in `src/routes/vehicleRoutes.js`.
 - Created TDD integration test suite `backend/tests/search.test.js`.
 - Verified test suite execution: 24/24 total passed.
+
+---
+
+## Phase 4 & 5: Inventory Purchase & Restock Workflow
+
+### Prompt 7: Purchase & Restock Endpoints & Tests
+> "Implement POST /api/vehicles/:id/purchase and POST /api/vehicles/:id/restock with quantity validation and TDD tests."
+
+**AI Action**:
+- Created `src/controllers/inventoryController.js` with `purchaseVehicle` and `restockVehicle`.
+- Mounted purchase and restock routes in `src/routes/vehicleRoutes.js`.
+- Created TDD integration test suite `backend/tests/inventory.test.js`.
+- Verified test suite execution: 29/29 total passed.

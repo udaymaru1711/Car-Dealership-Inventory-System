@@ -20,7 +20,13 @@ A full-stack RESTful Car Dealership Inventory System built with Node.js, Express
 - [x] **Feature 3.1**: Vehicle Search (`GET /api/vehicles/search` by make, model, category, price range).
 
 ### Phase 4: Purchase Workflow
-- [ ] **Feature 4.1**: Purchase Vehicle (`POST /api/vehicles/:id/purchase` - stock decrement & record transaction).
+- [x] **Feature 4.1**: Purchase Vehicle (`POST /api/vehicles/:id/purchase` - stock decrement & transaction logging).
+
+### Phase 5: Restock Workflow
+- [x] **Feature 5.1**: Restock Vehicle (`POST /api/vehicles/:id/restock` - stock increment, Admin only).
+
+### Phase 6: Frontend Application
+- [ ] **Feature 6.1**: React + Vite + Tailwind CSS Single Page Application.
 
 ---
 
@@ -30,7 +36,8 @@ A full-stack RESTful Car Dealership Inventory System built with Node.js, Express
 - Auth & Authorization Middleware (`verifyToken`, `requireAdmin`): PASS (6/6 tests passed)
 - Vehicle CRUD API (`POST`, `GET`, `PUT`, `DELETE /api/vehicles`): PASS (7/7 tests passed)
 - Vehicle Search & Filter (`GET /api/vehicles/search`): PASS (4/4 tests passed)
-- **Total Test Pass Rate**: 24/24 passed (100%)
+- Inventory Purchase & Restock (`POST /api/vehicles/:id/purchase`, `restock`): PASS (5/5 tests passed)
+- **Total Test Pass Rate**: 29/29 passed (100%)
 
 ---
 
@@ -40,9 +47,10 @@ A full-stack RESTful Car Dealership Inventory System built with Node.js, Express
 - **Antigravity AI Assistant** (powered by Gemini 3.6 Flash)
 
 ### How AI Was Utilized
-- Generated Express controllers and routes for User Auth, Vehicle CRUD, and Vehicle Search.
-- Implemented PostgreSQL dynamic multi-criteria SQL query builder with fallback memory layer.
-- Built Jest + Supertest integration tests for Search & Filtering adhering to TDD patterns.
+- Generated Express controllers and routes for User Auth, Vehicle CRUD, Vehicle Search, Purchase, and Restock endpoints.
+- Implemented PostgreSQL database queries and transaction handlers.
+- Created `verifyToken` and `requireAdmin` security middlewares.
+- Built comprehensive Jest + Supertest integration test suite adhering to TDD patterns.
 
 ### Reflection on AI Impact
-AI significantly accelerated boilerplate creation, database query handling, authentication flows, middleware security, search algorithms, and test-driven development cycles.
+AI significantly accelerated backend route creation, database transactions, authorization rules, inventory management logic, and test-driven development cycles.
