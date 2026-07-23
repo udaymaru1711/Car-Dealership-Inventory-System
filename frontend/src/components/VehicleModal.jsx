@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { X, Car, Plus, Save } from 'lucide-react';
+import { X, Car, Plus, Save, Upload, Image as ImageIcon } from 'lucide-react';
 import { useVehicles } from '../context/VehicleContext';
+
+const PRESET_IMAGES = [
+  { label: 'Porsche 911', url: 'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&q=80&w=1000' },
+  { label: 'Tesla S', url: 'https://images.unsplash.com/photo-1536700503339-1e4b06520771?auto=format&fit=crop&q=80&w=1000' },
+  { label: 'Audi RS6', url: 'https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?auto=format&fit=crop&q=80&w=1000' },
+  { label: 'Lamborghini', url: 'https://images.unsplash.com/photo-1544829099-b9a0c07fad1a?auto=format&fit=crop&q=80&w=1000' },
+];
 
 export default function VehicleModal({ isOpen, onClose, editingVehicle }) {
   const { createVehicle, updateVehicle } = useVehicles();
@@ -41,7 +48,19 @@ export default function VehicleModal({ isOpen, onClose, editingVehicle }) {
     }
   }, [editingVehicle, isOpen]);
 
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData(prev => ({ ...prev, image_url: reader.result }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   if (!isOpen) return null;
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -151,15 +170,44 @@ export default function VehicleModal({ isOpen, onClose, editingVehicle }) {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1">Image URL</label>
+            <div className="flex items-center justify-between mb-1">
+              <label className="text-xs font-semibold text-slate-300">Vehicle Image</label>
+              <label className="text-[11px] font-bold text-amber-400 hover:text-amber-300 cursor-pointer flex items-center gap-1">
+                <Upload className="w-3 h-3" />
+                <span>Upload Local File</span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileUpload}
+                  className="hidden"
+                />
+              </label>
+            </div>
+
             <input
-              type="url"
+              type="text"
               value={formData.image_url}
               onChange={e => setFormData({ ...formData, image_url: e.target.value })}
-              placeholder="https://images.unsplash.com/..."
-              className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:border-amber-400 focus:outline-none"
+              placeholder="Paste image web URL or select local file / preset below..."
+              className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:border-amber-400 focus:outline-none mb-2"
             />
+
+            {/* Presets */}
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <span className="text-[10px] text-slate-500 font-semibold uppercase">Presets:</span>
+              {PRESET_IMAGES.map((preset, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => setFormData({ ...formData, image_url: preset.url })}
+                  className="px-2 py-0.5 rounded-lg bg-slate-900 border border-slate-800 hover:border-amber-500/50 text-[10px] text-slate-300 font-medium transition"
+                >
+                  {preset.label}
+                </button>
+              ))}
+            </div>
           </div>
+
 
           <div>
             <label className="block text-xs font-semibold text-slate-300 mb-1">Description</label>

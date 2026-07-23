@@ -17,8 +17,13 @@ export default function VehicleCard({ vehicle, onEdit, onRestock }) {
         <img
           src={vehicle.image_url || 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80&w=1000'}
           alt={`${vehicle.make} ${vehicle.model}`}
+          onError={(e) => {
+            e.target.onerror = null;
+            e.target.src = 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80&w=1000';
+          }}
           className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
         />
+
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-80"></div>
 
         {/* Category Pill */}
