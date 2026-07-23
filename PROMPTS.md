@@ -30,3 +30,15 @@
 - Added route handler to `src/routes/authRoutes.js`.
 - Expanded integration tests in `backend/tests/auth.test.js`.
 - Verified test suite execution: 7/7 total passed.
+
+---
+
+## Feature 1.4: JWT Authentication & Authorization Middleware
+
+### Prompt 4: Security Middlewares & Role Verification
+> "Implement verifyToken and requireAdmin middleware and write unit/integration tests."
+
+**AI Action**:
+- Created `src/middleware/authMiddleware.js` exporting `verifyToken` and `requireAdmin`.
+- Created TDD integration test suite `backend/tests/middleware.test.js`.
+- Verified test suite execution: 13/13 total passed.
